@@ -3,9 +3,9 @@ node_modules/
 build/
 dist/
 coverage/
-data/
-backups/
-logs/
+/data/
+/backups/
+/logs/
 *.sqlite
 *.sqlite-*
 .DS_Store
