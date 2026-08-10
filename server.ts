@@ -8,7 +8,7 @@ import { logError, logInfo } from './server/logger';
 import { createPasswordHash, createRefreshToken, createToken, generateMfaSecret, generateTotpCode, requireAuth, requireModuleAccess, requireRole, verifyPassword, verifyRefreshToken, verifyTotp } from './server/auth';
 import { ensureDefaultSeed, getDatabase } from './server/database';
 import { createBusinessStore } from './server/businessStore';
-import { INITIAL_PRODUCTS, INITIAL_SUPPLIERS, INITIAL_SETTINGS } from './src/data/seedData';
+import { INITIAL_PRODUCTS, INITIAL_SUPPLIERS, INITIAL_SETTINGS } from './src/data/seedData.ts';
 
 const app = express();
 const PORT = Number(process.env.PORT || config.port || 3000);
