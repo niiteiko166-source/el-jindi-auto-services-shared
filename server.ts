@@ -234,8 +234,8 @@ app.get('/api/auth/me', requireAuth, (req: any, res) => {
 
 app.post('/api/auth/users', requireAuth, requireRole(['ADMIN']), async (req: any, res) => {
   const { username, name, email, role, pin, active = true } = req.body;
-  if (!username || !name || !email || !role || !pin) {
-    return res.status(400).json({ error: 'Username, name, email, role, and PIN are required' });
+  if (!username || !name || !role || !pin) {
+    return res.status(400).json({ error: 'Username, name, role, and PIN are required' });
   }
 
   try {
@@ -243,7 +243,7 @@ app.post('/api/auth/users', requireAuth, requireRole(['ADMIN']), async (req: any
       `INSERT INTO users (username, name, role, email, password_hash, active, created_at)
        VALUES ($1, $2, $3, $4, $5, $6, NOW())
        RETURNING id, username, name, role, email, active`,
-      [username.trim(), name.trim(), role, email.trim(), createPasswordHash(String(pin)), active ? 1 : 0]
+      [username.trim(), name.trim(), role, String(email || '').trim(), createPasswordHash(String(pin)), active ? 1 : 0]
     );
     const user = result.rows[0];
     res.status(201).json({
