@@ -9,9 +9,11 @@ if (!targetUrl) {
   throw new Error('TARGET_DATABASE_URL is required. Set it only in your local terminal.');
 }
 
+const secureTargetUrl = `${targetUrl}${targetUrl.includes('?') ? '&' : '?'}sslmode=require`;
+
 const sourcePath = path.resolve('data', 'db.json');
 const state = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
-const pool = new Pool({ connectionString: targetUrl });
+const pool = new Pool({ connectionString: secureTargetUrl });
 
 try {
   await pool.query(`
