@@ -1,0 +1,6 @@
+{
+  "name": "El-Jindi Auto Services",
+  "description": "Enterprise Auto Parts Management System featuring Inventory Management, Point of Sale, Purchasing, Debtors (AR), Accounting, Reports & Analytics, and Barcode Support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

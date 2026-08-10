@@ -1,0 +1,16 @@
+node_modules/
+.venv/
+build/
+dist/
+coverage/
+data/
+backups/
+logs/
+*.sqlite
+*.sqlite-*
+.DS_Store
+*.log
+.env*
+!.env.example
+temp-*
+tmp-*
