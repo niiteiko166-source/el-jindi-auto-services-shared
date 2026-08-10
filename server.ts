@@ -232,6 +232,15 @@ app.get('/api/auth/me', requireAuth, (req: any, res) => {
   res.json({ user: req.user });
 });
 
+app.get('/api/auth/users', requireAuth, requireRole(['ADMIN']), async (_req: any, res) => {
+  const result = await dbConnection.query(
+    'SELECT id, username, name, role, email, active FROM users ORDER BY id'
+  );
+  res.json({
+    users: result.rows.map((user) => ({ ...user, id: String(user.id), active: Boolean(user.active) }))
+  });
+});
+
 app.post('/api/auth/users', requireAuth, requireRole(['ADMIN']), async (req: any, res) => {
   const { username, name, email, role, pin, active = true } = req.body;
   if (!username || !name || !role || !pin) {

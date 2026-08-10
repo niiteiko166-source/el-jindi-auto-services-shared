@@ -47,6 +47,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .then((user) => {
         if (mounted) {
           setCurrentUser(user);
+          if (user.role === 'ADMIN') {
+            api.getUsers().then((serverUsers) => {
+              if (mounted) setUsers(serverUsers);
+            }).catch(() => undefined);
+          }
         }
       })
       .catch(() => {
@@ -60,6 +65,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!currentUser || currentUser.role !== 'ADMIN') return;
+    let mounted = true;
+    api.getUsers().then((serverUsers) => {
+      if (mounted) setUsers(serverUsers);
+    }).catch(() => undefined);
+    return () => {
+      mounted = false;
+    };
+  }, [currentUser]);
 
   useEffect(() => {
     try {

@@ -521,6 +521,15 @@ export const api = {
     return body.user as User;
   },
 
+  async getUsers(): Promise<User[]> {
+    const res = await fetchWithAuth(`${BASE_URL}/auth/users`);
+    const body = await res.json().catch(() => null);
+    if (!res.ok || !Array.isArray(body?.users)) {
+      throw new Error(body?.error || `Failed to fetch users (${res.status})`);
+    }
+    return body.users as User[];
+  },
+
   async changePassword(currentPassword: string, newPassword: string): Promise<void> {
     const res = await fetchWithAuth(`${BASE_URL}/auth/change-password`, {
       method: 'POST',
