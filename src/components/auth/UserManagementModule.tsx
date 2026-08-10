@@ -66,7 +66,7 @@ export const UserManagementModule: React.FC = () => {
       if (editingUserId) {
         await updateUser(editingUserId, formData);
       } else {
-        addUser(formData);
+        await addUser(formData);
       }
       setIsEditing(false);
     } catch (error) {

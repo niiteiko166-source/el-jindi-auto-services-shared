@@ -545,6 +545,26 @@ export const api = {
     }
   },
 
+  async createUser(user: {
+    username: string;
+    name: string;
+    email: string;
+    role: string;
+    pin: string;
+    active: boolean;
+  }): Promise<User> {
+    const res = await fetchWithAuth(`${BASE_URL}/auth/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+    const body = await res.json().catch(() => null);
+    if (!res.ok || !body?.user) {
+      throw new Error(body?.error || `Failed to create user (${res.status})`);
+    }
+    return body.user as User;
+  },
+
   logout(): void {
     clearAuthToken();
   }

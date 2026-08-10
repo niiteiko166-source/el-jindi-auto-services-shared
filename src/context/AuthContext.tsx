@@ -8,7 +8,7 @@ interface AuthContextType {
   login: (username: string, pin: string) => Promise<boolean>;
   logout: () => void;
   switchRole: (role: UserRole) => void;
-  addUser: (user: Omit<User, 'id'> & { pin?: string }) => void;
+  addUser: (user: Omit<User, 'id'> & { pin?: string }) => Promise<void>;
   updateUser: (id: string, updates: Partial<User> & { pin?: string }) => Promise<void>;
   deleteUser: (id: string) => void;
   canAccessModule: (moduleName: string) => boolean;
@@ -130,13 +130,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const addUser = (userData: Omit<User, 'id'> & { pin?: string }) => {
-    const newId = `u_${Date.now()}`;
-    const newUser = {
-      ...userData,
-      id: newId,
-      pin: userData.pin || '1234'
-    };
+  const addUser = async (userData: Omit<User, 'id'> & { pin?: string }) => {
+    const newUser = await api.createUser({
+      username: userData.username,
+      name: userData.name,
+      email: userData.email,
+      role: userData.role,
+      pin: userData.pin || '1234',
+      active: userData.active
+    });
     setUsers((prev) => [...prev, newUser]);
 
     api.addAuditLog({

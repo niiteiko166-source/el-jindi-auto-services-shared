@@ -232,6 +232,32 @@ app.get('/api/auth/me', requireAuth, (req: any, res) => {
   res.json({ user: req.user });
 });
 
+app.post('/api/auth/users', requireAuth, requireRole(['ADMIN']), async (req: any, res) => {
+  const { username, name, email, role, pin, active = true } = req.body;
+  if (!username || !name || !email || !role || !pin) {
+    return res.status(400).json({ error: 'Username, name, email, role, and PIN are required' });
+  }
+
+  try {
+    const result = await dbConnection.query(
+      `INSERT INTO users (username, name, role, email, password_hash, active, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, NOW())
+       RETURNING id, username, name, role, email, active`,
+      [username.trim(), name.trim(), role, email.trim(), createPasswordHash(String(pin)), active ? 1 : 0]
+    );
+    const user = result.rows[0];
+    res.status(201).json({
+      user: { ...user, id: String(user.id), active: Boolean(user.active) }
+    });
+  } catch (error: any) {
+    if (error?.code === '23505') {
+      return res.status(409).json({ error: 'Username already exists' });
+    }
+    logError('User creation failed', { error });
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
+
 app.post('/api/auth/change-password', requireAuth, async (req: any, res) => {
   const { currentPassword, newPassword } = req.body;
   const result = await dbConnection.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
