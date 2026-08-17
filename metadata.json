@@ -1,0 +1,6 @@
+{
+  "name": "El-Jindi Auto Services",
+  "description": "Comprehensive workshop management system for El-Jindi Auto Services, including job cards, inventory, invoices, quotations, customer and vehicle history, payments, and financial reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

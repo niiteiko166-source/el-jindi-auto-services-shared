@@ -1,0 +1,185 @@
+@media print {
+  html,
+  body {
+    width: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: #000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .printable-area {
+    color: #000 !important;
+  }
+
+  .printable-area .text-white,
+  .printable-area .text-slate-50,
+  .printable-area .text-amber-50 {
+    color: #fff !important;
+  }
+
+  .printable-area .bg-slate-900,
+  .printable-area .bg-slate-950,
+  .printable-area .bg-blue-600,
+  .printable-area .bg-indigo-600,
+  .printable-area .bg-emerald-600,
+  .printable-area .bg-amber-100,
+  .printable-area .bg-slate-50 {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .printable-area,
+  .printable-area * {
+    visibility: visible !important;
+  }
+
+  .printable-area {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    background: white !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    font-family: inherit !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    color: inherit !important;
+  }
+
+  #quotation-print-area,
+  #invoice-print-area {
+    page-break-inside: avoid !important;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
+
+  #invoice-print-area {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .printable-area .p-8 {
+    padding: 10px !important;
+  }
+
+  .printable-area .space-y-8 > * + * {
+    margin-top: 10px !important;
+  }
+
+  .printable-area .gap-6 {
+    gap: 8px !important;
+  }
+
+  .printable-area .p-4 {
+    padding: 8px !important;
+  }
+
+  .printable-area .text-xs {
+    font-size: 10px !important;
+  }
+
+  .printable-area .text-sm {
+    font-size: 11px !important;
+  }
+
+  .printable-area table {
+    font-size: 10px !important;
+  }
+
+  .printable-area th,
+  .printable-area td {
+    padding: 10px !important;
+  }
+
+  .printable-area .border,
+  .printable-area .rounded-xl,
+  .printable-area .rounded-2xl {
+    border-radius: 10px !important;
+  }
+
+  .printable-area .shadow-2xl,
+  .printable-area .shadow-xl,
+  .printable-area .shadow-sm,
+  .printable-area .shadow-md,
+  .printable-area .shadow-lg {
+    box-shadow: none !important;
+  }
+
+  .printable-area .font-black {
+    font-weight: 700 !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 4mm;
+  }
+
+  .printable-area * {
+    display: revert !important;
+    box-sizing: border-box !important;
+    page-break-inside: avoid !important;
+  }
+
+  .printable-area > * {
+    position: static !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .print-hidden,
+  .print-hidden * {
+    display: none !important;
+  }
+
+  .app-shell {
+    background: white !important;
+  }
+
+  table {
+    page-break-inside: auto !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+    page-break-after: auto !important;
+  }
+
+  td,
+  th {
+    page-break-inside: avoid !important;
+  }
+
+  .page-break {
+    page-break-after: avoid !important;
+    break-after: avoid-page !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 5mm;
+  }
+}

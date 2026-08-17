@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="EL-JINDI Auto Services Logo">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#0b0b0d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="72" fill="url(#bg)"/>
+  <path d="M140 120h180c52 0 94 42 94 94v112c0 52-42 94-94 94H140V120zm54 54v156h126c29 0 52-23 52-52V226c0-29-23-52-52-52H194z" fill="url(#accent)"/>
+  <path d="M250 182h106v54H250zm0 76h128v54H250z" fill="#d1fae5" opacity="0.92"/>
+  <path d="M58 120l64 72H58V120zm0 90h88l-64 72H58v-72z" fill="#6ee7b7"/>
+  <path d="M136 110l86 0v48l-86 0z" fill="#a7f3d0" opacity="0.9"/>
+  <circle cx="402" cy="132" r="26" fill="#34d399"/>
+</svg>

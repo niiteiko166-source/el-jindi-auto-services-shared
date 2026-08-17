@@ -1,0 +1,207 @@
+#!/usr/bin/env python3
+"""
+Import customers from an Excel workbook into JSON / TypeScript snippet for this project.
+Usage:
+  python tools/import_customers.py --input workbook1.xlsx --sheet Customers
+
+Outputs:
+  - src/data/imported_customers.json
+  - src/data/imported_customers.ts
+
+Requires: pandas, openpyxl
+  pip install pandas openpyxl
+"""
+
+from __future__ import annotations
+import argparse
+import json
+import time
+from pathlib import Path
+from datetime import datetime
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT_JSON = ROOT / 'src' / 'data' / 'imported_customers.json'
+OUT_TS = ROOT / 'src' / 'data' / 'imported_customers.ts'
+
+FIELD_KEYS = ['name', 'phone', 'email', 'address', 'company', 'createdAt', 'notes']
+
+# simple heuristics to match column names
+MATCH = {
+    'name': ['name', 'customer', 'full name'],
+    'phone': ['phone', 'mobile', 'telephone', 'tel'],
+    'email': ['email', 'e-mail'],
+    'address': ['address', 'addr', 'location'],
+    'company': ['company', 'organisation', 'organization', 'companyname', 'business'],
+    'createdAt': ['created', 'createdat', 'date', 'joined', 'created on'],
+    'notes': ['notes', 'note', 'remarks', 'comment']
+}
+
+
+def find_column(df: pd.DataFrame, targets: list[str]) -> str | None:
+    cols = {c.lower().replace(' ', '').replace('_', ''): c for c in df.columns.astype(str)}
+    for t in targets:
+        key = t.lower().replace(' ', '').replace('_', '')
+        if key in cols:
+            return cols[key]
+    # fallback: substring match
+    for k, orig in cols.items():
+        for t in targets:
+            if t.lower().replace(' ', '') in k:
+                return orig
+    return None
+
+
+def normalize_date(val) -> str:
+    if pd.isna(val):
+        return datetime.now().strftime('%Y-%m-%d')
+    try:
+        dt = pd.to_datetime(val)
+        return dt.strftime('%Y-%m-%d')
+    except Exception:
+        s = str(val).strip()
+        try:
+            return datetime.fromisoformat(s).strftime('%Y-%m-%d')
+        except Exception:
+            return datetime.now().strftime('%Y-%m-%d')
+
+
+def row_to_customer(row: pd.Series, colmap: dict[str, str], idx: int) -> dict:
+    ts = int(time.time() * 1000)
+    cust_id = f"cust-{ts}-{idx+1}"
+    customer = {
+        'id': cust_id,
+        'name': str(row.get(colmap.get('name'), '')).strip(),
+        'phone': str(row.get(colmap.get('phone'), '')).strip(),
+        'email': None,
+        'address': None,
+        'company': None,
+        'createdAt': datetime.now().strftime('%Y-%m-%d'),
+        'notes': None
+    }
+    if colmap.get('email'):
+        v = row.get(colmap['email'])
+        if not pd.isna(v):
+            customer['email'] = str(v).strip()
+    if colmap.get('address'):
+        v = row.get(colmap['address'])
+        if not pd.isna(v):
+            customer['address'] = str(v).strip()
+    if colmap.get('company'):
+        v = row.get(colmap['company'])
+        if not pd.isna(v):
+            customer['company'] = str(v).strip()
+    if colmap.get('createdAt'):
+        v = row.get(colmap['createdAt'])
+        customer['createdAt'] = normalize_date(v)
+    if colmap.get('notes'):
+        v = row.get(colmap['notes'])
+        if not pd.isna(v):
+            customer['notes'] = str(v).strip()
+    # ensure name and phone exist
+    if not customer['name']:
+        # try to build from other columns
+        customer['name'] = f"Unnamed Customer {idx+1}"
+    if not customer['phone']:
+        customer['phone'] = ''
+    return customer
+
+
+def df_to_customers(df: pd.DataFrame) -> list[dict]:
+    colmap: dict[str, str] = {}
+    for key in FIELD_KEYS:
+        cand = MATCH.get(key, [key])
+        found = find_column(df, cand)
+        if found:
+            colmap[key] = found
+    customers = []
+    for i, row in df.iterrows():
+        cust = row_to_customer(row, colmap, i)
+        customers.append(cust)
+    return customers
+
+
+def write_outputs(customers: list[dict]):
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with OUT_JSON.open('w', encoding='utf-8') as f:
+        json.dump(customers, f, indent=2, ensure_ascii=False)
+
+    # Write a TypeScript snippet that can be merged into src/data/seedData.ts
+    ts_objs = []
+    for c in customers:
+        obj = {
+            'id': c['id'],
+            'name': c['name'],
+            'phone': c['phone'],
+            'email': c['email'],
+            'address': c['address'],
+            'company': c['company'],
+            'createdAt': c['createdAt'],
+            'notes': c['notes']
+        }
+        # Build ts literal
+        parts = []
+        for k, v in obj.items():
+            if v is None:
+                parts.append(f"  {k}: undefined")
+            else:
+                # escape
+                s = str(v).replace('\\', '\\\\').replace('"', '\\"')
+                parts.append(f"  {k}: \"{s}\"")
+        ts_objs.append('{\n' + ',\n'.join(parts) + '\n}')
+
+    ts_content = (
+        "// Auto-generated by tools/import_customers.py - paste into src/data/seedData.ts as needed\n"
+        "import { Customer } from '../types';\n\n"
+        "export const importedCustomers: Customer[] = [\n"
+        + ',\n'.join(ts_objs)
+        + "\n];\n"
+    )
+    with OUT_TS.open('w', encoding='utf-8') as f:
+        f.write(ts_content)
+
+    print(f"Wrote {OUT_JSON}")
+    print(f"Wrote {OUT_TS}")
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument('--input', '-i', default='workbook1.xlsx', help='Path to Excel workbook')
+    p.add_argument('--sheet', '-s', default=None, help='Sheet name to read (defaults to first sheet or "Customers")')
+    args = p.parse_args()
+
+    excel_path = Path(args.input)
+    if not excel_path.exists():
+        print(f"ERROR: input file not found: {excel_path}")
+        return
+
+    xls = pd.read_excel(excel_path, sheet_name=None)
+    sheet_name = args.sheet
+    if sheet_name and sheet_name in xls:
+        df = xls[sheet_name]
+    else:
+        # prefer a sheet named like customers
+        found = None
+        for name in xls.keys():
+            if 'customer' in name.lower():
+                found = name
+                break
+        if not found:
+            # pick first sheet
+            found = list(xls.keys())[0]
+        df = xls[found]
+        print(f"Using sheet: {found}")
+
+    customers = df_to_customers(df)
+    if not customers:
+        print('No customers found in sheet.')
+        return
+
+    write_outputs(customers)
+    print(f"Imported {len(customers)} customers.")
+    print('Next steps: review src/data/imported_customers.ts and merge into src/data/seedData.ts or use the JSON output programmatically.')
+
+
+if __name__ == '__main__':
+    main()

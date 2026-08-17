@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Login</title></head>
+<body>
+<script>
+const users = [{
+  id: 'usr-2',
+  name: 'Emmanuel Jindi',
+  email: 'admin@eljindiauto.com',
+  role: 'Admin',
+  phone: '+233 20 888 9900',
+  password: 'password'
+}];
+
+// Set auth in localStorage with correct key
+localStorage.setItem('eljindi_current_user_v1', JSON.stringify(users[0]));
+
+// Redirect to price list
+setTimeout(() => window.location.href = 'http://localhost:3004/#/price-list', 500);
+</script>
+</body>
+</html>
