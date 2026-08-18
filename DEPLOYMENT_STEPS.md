@@ -1,16 +1,16 @@
-# 🚀 Deployment to Render + Supabase - Step by Step
+# 🚀 Deployment to Render + Render Managed Postgres - Step by Step
 
 **Total Time: 15-20 minutes**  
 **Cost: $0 USD (Free tiers)**
 
 ---
 
-## ✅ Step 1: Prepare Your Supabase Connection (5 min)
+## ✅ Step 1: Prepare Your Render Postgres Connection (5 min)
 
-You have provided your Supabase connection string. Let's verify it's correct:
+You have provided your database connection string. Let's verify it's correct:
 
 ```
-postgresql://postgres:Vandiesel@00#@db.unzzckjseicsdxtnwsbw.supabase.co:5432/postgres
+<RENDER_MANAGED_POSTGRES_URL_HERE>
 ```
 
 ⚠️ **⚠️ IMPORTANT - Security Warning:**
@@ -87,7 +87,7 @@ Before clicking "Deploy", click **"Advanced"** and add:
 
 | Key | Value |
 |-----|-------|
-| `DATABASE_URL` | `postgresql://postgres:Vandiesel@00#@db.unzzckjseicsdxtnwsbw.supabase.co:5432/postgres` |
+| `DATABASE_URL` | `<RENDER_MANAGED_POSTGRES_URL_HERE>` |
 | `NODE_ENV` | `production` |
 | `PORT` | `10000` |
 | `JWT_SECRET` | *(Render generates this automatically - check the "Generate" button)* |
@@ -146,7 +146,7 @@ Expected response:
 - [ ] Data persists after refresh
 - [ ] Multi-device sync works
 - [ ] All API endpoints respond
-- [ ] Database backups are enabled in Supabase
+- [ ] Database backups are enabled for your Render Managed Postgres instance
 
 ---
 
@@ -162,7 +162,7 @@ Expected response:
 ### Database connection fails
 - Verify connection string has:
   - Correct password (with URL encoding for special chars)
-  - Correct host: `db.unzzckjseicsdxtnwsbw.supabase.co`
+  - Correct host: `<your-Render-DB-host>`
   - Correct port: `5432`
 - Test locally first: `psql <CONNECTION_STRING>`
 
@@ -177,7 +177,7 @@ Expected response:
 ## 📚 Additional Resources
 
 - [Render Documentation](https://render.com/docs)
-- [Supabase Documentation](https://supabase.com/docs)
+- [Render Documentation - Databases](https://render.com/docs/databases)
 - [PostgreSQL Connection Strings](https://www.postgresql.org/docs/current/libpq-connect.html)
 
 ---
@@ -194,4 +194,6 @@ Your application is now live and automatically:
 1. Share the URL with your team
 2. Create real user accounts
 3. Import your actual customer/vehicle data
-4. Monitor usage in Render & Supabase dashboards
+4. Monitor usage in the Render dashboard
+
+
