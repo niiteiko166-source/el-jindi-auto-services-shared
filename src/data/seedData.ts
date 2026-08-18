@@ -250,3 +250,31 @@ export const INITIAL_PRODUCTS: Product[] = [
 ];
 
 export const INITIAL_DEBTORS: DebtorRecord[] = [];
+
+export const initialUsers = [
+  {
+    id: 'user-admin',
+    name: 'Administrator',
+    username: 'admin',
+    password: 'password',
+    role: 'Admin',
+    email: 'admin@eljindi.com',
+    createdAt: new Date().toISOString(),
+  }
+];
+
+export const initialCustomers: Customer[] = INITIAL_CUSTOMERS;
+export const initialVehicles: any[] = [];
+export const initialJobCards: any[] = [];
+export const initialPriceList: any[] = [];
+export const initialInventory: any[] = [];
+export const initialRequisitions: any[] = [];
+export const initialQuotations: any[] = [];
+export const initialInvoices: any[] = [];
+export const initialPayments: any[] = [];
+export const initialExpenses: any[] = [];
+export const initialSuppliers: any[] = INITIAL_SUPPLIERS;
+export const initialBookings: any[] = [];
+export const initialNotifications: any[] = [];
+export const initialAuditLogs: any[] = [];
+export const initialSettings: Record<string, any> = INITIAL_SETTINGS;
