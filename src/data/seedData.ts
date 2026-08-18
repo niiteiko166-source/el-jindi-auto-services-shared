@@ -24,7 +24,28 @@ export const INITIAL_SUPPLIERS: Supplier[] = [
   { id: 4, name: 'Gold Star Battery Depot', contactPerson: 'Kofi Owusu', phone: '+233 27 765 4321', email: 'sales@goldstarbatteries.com', address: 'Kaneshie, Accra', outstandingBalance: 850, notes: 'Automotive Batteries', createdAt: '2024-02-10' },
 ];
 
-export const INITIAL_CUSTOMERS: Customer[] = [];
+export const INITIAL_CUSTOMERS: Customer[] = [
+  {
+    id: 'cust-1',
+    name: 'John Doe',
+    phone: '+233240001111',
+    email: 'john.doe@example.com',
+    address: 'Osu, Accra',
+    company: 'JD Motors',
+    createdAt: new Date().toISOString(),
+    notes: 'Placeholder customer for local testing'
+  },
+  {
+    id: 'cust-2',
+    name: 'Jane Smith',
+    phone: '+233240002222',
+    email: 'jane.smith@example.com',
+    address: 'Makola, Accra',
+    company: 'Smith Autos',
+    createdAt: new Date().toISOString(),
+    notes: 'Placeholder customer for local testing'
+  }
+];
 
 export const INITIAL_PRODUCTS: Product[] = [
   {"id": 1, "sheet": "Filters", "category": "TOYOTA- OIL FILTER", "code": "04152-31090", "desc": "TOYOTA CAMRY 07-21, HIGHLANDER 08-21 ,RAV 4 06-18, SIENNA 06-20, AVALON 05-21,VENZA 09-17", "position": "", "cost": 20, "qty": 10, "sell": 90, "sold": 7, "ret": 5, "reorder": 3},
@@ -264,7 +285,36 @@ export const initialUsers = [
 ];
 
 export const initialCustomers: Customer[] = INITIAL_CUSTOMERS;
-export const initialVehicles: any[] = [];
+export const initialVehicles: any[] = [
+  {
+    id: 'veh-1',
+    customerId: 'cust-1',
+    registrationNumber: 'GR 1234-24',
+    make: 'Toyota',
+    model: 'Corolla',
+    year: 2018,
+    vin: 'JT123456789012345',
+    mileage: 45000,
+    color: 'White',
+    fuelType: 'Petrol',
+    notes: 'Regular customer vehicle (placeholder)',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'veh-2',
+    customerId: 'cust-2',
+    registrationNumber: 'GR 5678-24',
+    make: 'Nissan',
+    model: 'X-Trail',
+    year: 2016,
+    vin: 'JN987654321098765',
+    mileage: 76000,
+    color: 'Blue',
+    fuelType: 'Diesel',
+    notes: 'Placeholder vehicle for testing',
+    createdAt: new Date().toISOString()
+  }
+];
 export const initialJobCards: any[] = [];
 export const initialPriceList: any[] = [];
 export const initialInventory: any[] = [];

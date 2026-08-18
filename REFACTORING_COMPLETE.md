@@ -2,7 +2,7 @@
 
 ## Summary
 
-The EL-JINDI Auto Services application has been successfully refactored from a dual-database system (SQLite + in-memory) to a pure PostgreSQL architecture running on Render.com free tier with Supabase.
+The EL-JINDI Auto Services application has been successfully refactored from a dual-database system (SQLite + in-memory) to a pure PostgreSQL architecture running on Render.com free tier using a Render Managed PostgreSQL database.
 
 **Status:** ✅ **READY FOR PRODUCTION DEPLOYMENT**
 
@@ -18,7 +18,7 @@ The EL-JINDI Auto Services application has been successfully refactored from a d
 - Multiple sync paths causing confusion
 
 **After:**
-- PostgreSQL via Supabase (cloud-hosted)
+- PostgreSQL via Render Managed PostgreSQL (cloud-hosted)
 - Single source of truth in PostgreSQL `app_state` table
 - Automatic data sync across devices
 - Zero local database maintenance
@@ -33,7 +33,7 @@ The EL-JINDI Auto Services application has been successfully refactored from a d
 - `server.ts` - Added `async`/`await` to all 25+ API endpoints
 - All database calls now properly await PostgreSQL operations
 - Authentication middleware hardened with JWT_SECRET validation
-- Removed SQLite backup/restore infrastructure (not needed with Supabase)
+- Removed SQLite backup/restore infrastructure (not needed with a managed Postgres on Render)
 
 ### 3. Configuration Updates
 
@@ -44,7 +44,7 @@ The EL-JINDI Auto Services application has been successfully refactored from a d
 
 **Created:**
 - `src/data/seedData.ts` - Initial data seeds
-- `DEPLOYMENT.md` - Comprehensive deployment guide (step-by-step for Render + Supabase)
+- `DEPLOYMENT.md` - Comprehensive deployment guide (step-by-step for Render + Render Managed Postgres)
 
 ### 4. Build System
 
@@ -112,7 +112,7 @@ The EL-JINDI Auto Services application has been successfully refactored from a d
 
 ### Quick Start (5 minutes)
 
-1. **Supabase:** Create free project, get connection string
+1. **Render (Managed Postgres):** Create a managed PostgreSQL instance and get the connection string
 2. **GitHub:** Push code to your GitHub repository
 3. **Render:** Create Web Service, set environment variables, deploy
 4. **Test:** Open Render URL, login, create test data
@@ -163,7 +163,7 @@ npm start
    Connection Pool (SSL)
          │
 ┌────────▼─────────────────────┐
-│ Supabase PostgreSQL           │
+│ Render Managed PostgreSQL     │
 │ - app_state (JSONB table)     │
 │ - Daily backups               │
 │ - Connection pooler           │
@@ -192,13 +192,13 @@ The frontend (React components) still uses localStorage synchronously. They have
 
 **Free Tier Performance:**
 - Render: 0.5GB RAM, Shared CPU
-- Supabase: 500MB database, shared PostgreSQL
+- Render Managed Postgres: 500MB database, shared PostgreSQL
 - Suitable for: 1-10 concurrent users, typical workshop operations
 - Expected response time: 100-500ms
 
 **Scaling:**
 - Upgrade Render to $7/month for dedicated resources
-- Upgrade Supabase to $25/month for dedicated database
+- Upgrade managed Postgres to a paid tier for a dedicated database (if needed)
 - Can then handle 50+ concurrent users
 
 ---
@@ -218,7 +218,7 @@ The frontend (React components) still uses localStorage synchronously. They have
 2. Change all other default user passwords
 3. Generate unique JWT_SECRET (not `test-secret-key`)
 4. Use HTTPS (automatic with Render)
-5. Set up regular database backups (automatic with Supabase)
+5. Set up regular database backups (configure in Render Managed Postgres)
 
 ---
 
@@ -227,7 +227,7 @@ The frontend (React components) still uses localStorage synchronously. They have
 - **Deployment Guide:** See [DEPLOYMENT.md](./DEPLOYMENT.md)
 - **Build Status:** Last built successfully on [DATE]
 - **Last Test:** Server starts and runs on localhost:3000
-- **Database:** Ready for Supabase PostgreSQL connection
+- **Database:** Ready for Render Managed PostgreSQL connection
 
 ---
 
@@ -236,7 +236,7 @@ The frontend (React components) still uses localStorage synchronously. They have
 Before deploying to production:
 
 - [ ] All code pushed to GitHub
-- [ ] Supabase project created and connection string retrieved
+- [ ] Render Managed Postgres instance created and connection string retrieved
 - [ ] Render account created
 - [ ] Environment variables documented
 - [ ] JWT_SECRET generated
@@ -263,7 +263,7 @@ Before deploying to production:
 
 **Project Status:** ✅ READY FOR DEPLOYMENT
 
-**Next Action:** Follow steps in [DEPLOYMENT.md](./DEPLOYMENT.md) to deploy to Render + Supabase
+**Next Action:** Follow steps in [DEPLOYMENT.md](./DEPLOYMENT.md) to deploy to Render with a Render Managed Postgres database
 
 **Deployment Time Estimate:** 15-20 minutes from start to live application
 

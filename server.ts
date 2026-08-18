@@ -291,18 +291,18 @@ async function startServer() {
   });
 
   // ========== CUSTOMERS CRUD ==========
-  app.get('/api/customers', (req, res) => {
+  app.get('/api/customers', async (req, res) => {
     try {
-      const customers = db.getCustomers();
+      const customers = await db.getCustomers();
       res.json(customers);
     } catch (error) {
       res.status(500).json({ error: String(error) });
     }
   });
 
-  app.get('/api/customers/:id', (req, res) => {
+  app.get('/api/customers/:id', async (req, res) => {
     try {
-      const customer = db.getCustomerById(req.params.id);
+      const customer = await db.getCustomerById(req.params.id);
       if (!customer) return res.status(404).json({ error: 'Customer not found' });
       res.json(customer);
     } catch (error) {
