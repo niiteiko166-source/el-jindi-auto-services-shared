@@ -14,7 +14,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "migrate:postgres": "node scripts/migrate-to-postgres.mjs",
-    "migrate:app-state": "node scripts/migrate-app-state.mjs"
+    "migrate:app-state": "node scripts/migrate-app-state.mjs",
+    "migrate:imported": "tsx scripts/migrate-imported-data.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
