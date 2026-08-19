@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
-import { importedCustomers } from '../src/data/imported_customers';
-import { importedVehicles } from '../src/data/imported_vehicles';
-import { rawPriceListData } from '../src/data/priceListRawData';
+import { importedCustomers } from '../src/data/imported_customers.ts';
+import { importedVehicles } from '../src/data/imported_vehicles.ts';
+import { rawPriceListData } from '../src/data/priceListRawData.ts';
 
 const connectionString = process.env.DATABASE_URL || (process.env.PGUSER && process.env.POSTGRES_PASSWORD && process.env.RAILWAY_PRIVATE_DOMAIN && process.env.PGDATABASE
   ? `postgresql://${encodeURIComponent(process.env.PGUSER)}:${encodeURIComponent(process.env.POSTGRES_PASSWORD)}@${process.env.RAILWAY_PRIVATE_DOMAIN}:5432/${encodeURIComponent(process.env.PGDATABASE)}`
