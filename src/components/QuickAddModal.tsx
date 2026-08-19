@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { X, UserPlus, Car, Calendar, FileText, CreditCard, TrendingDown, PackagePlus, Trash2 } from 'lucide-react';
 import { Customer, Vehicle, PriceListItem } from '../types';
 import { db } from '../services/db';
+import { VEHICLE_MAKES } from '../data/vehicleMakes';
 
 interface QuickAddModalProps {
   type: string; // 'customer' | 'vehicle' | 'booking' | 'payment' | 'expense' | 'part' | 'price-list'
@@ -313,8 +314,8 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                     onChange={e => setVehMake(e.target.value)}
                     className="w-full px-2 py-2 border rounded-xl text-xs font-semibold"
                   >
-                    {['Toyota', 'Honda', 'Mercedes-Benz', 'Nissan', 'Hyundai', 'Kia', 'Ford', 'BMW', 'Volkswagen'].map(m => (
-                      <option key={m} value={m}>{m}</option>
+                    {VEHICLE_MAKES.map(make => (
+                      <option key={make} value={make}>{make}</option>
                     ))}
                   </select>
                 </div>

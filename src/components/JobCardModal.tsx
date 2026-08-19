@@ -36,6 +36,7 @@ import {
 import { db, calculateTotals } from '../services/db';
 import { CustomerSearchModal } from './CustomerSearchModal';
 import { PriceListSearchModal } from './PriceListSearchModal';
+import { VEHICLE_MAKES } from '../data/vehicleMakes';
 
 interface JobCardModalProps {
   isOpen: boolean;
@@ -860,8 +861,8 @@ ${recommendedRepairs}` : ''
                           onChange={e => setNewVehMake(e.target.value)}
                           className="px-2 py-1.5 border rounded-lg text-xs font-semibold"
                         >
-                          {['Toyota', 'Honda', 'Mercedes-Benz', 'Nissan', 'Hyundai', 'Kia', 'Ford', 'BMW', 'Volkswagen'].map(m => (
-                            <option key={m} value={m}>{m}</option>
+                          {VEHICLE_MAKES.map(make => (
+                            <option key={make} value={make}>{make}</option>
                           ))}
                         </select>
                         <input
