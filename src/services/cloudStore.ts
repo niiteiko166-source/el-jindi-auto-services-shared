@@ -30,7 +30,11 @@ export class CloudStore {
 
   constructor() {
     if (process.env.DATABASE_URL) {
-      this.pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined, max: 5 });
+      this.pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
+        max: Number(process.env.PG_POOL_MAX || (process.env.VERCEL ? 1 : 5)),
+      });
       this.ready = this.init();
     } else {
       console.warn('DATABASE_URL is not configured; using temporary in-memory cloud state for local development only.');

@@ -1,6 +1,6 @@
 ﻿# EL-JINDI Auto Services - Deployment Guide
 
-**Deployment Target:** Vercel (frontend and Express API) + PostgreSQL
+**Deployment Target:** Vercel (frontend and Express API) + Prisma Postgres
 **Cost:** Depends on your Vercel and PostgreSQL plans
 **Estimated Deployment Time:** 15-20 minutes  
 **Status:** Ready for Vercel deployment
@@ -22,7 +22,9 @@
    - `VERCEL`: `1`
 5. Deploy. `vercel.json` routes `/api/*` to the Express serverless function and all other paths to the Vite SPA.
 
-Vercel does not provide PostgreSQL. Keep using the existing PostgreSQL provider or create a separate hosted PostgreSQL database, then copy its connection string into Vercel. Do not upload `.env` or database credentials to GitHub.
+Prisma Postgres provides the PostgreSQL database. Copy the **pooled** connection string from the Prisma Console into Vercel as `DATABASE_URL`. The application uses the standard `pg` driver, so Prisma Client is not required for this existing data layer.
+
+Set `PG_POOL_MAX=1` in Vercel to avoid opening unnecessary connections across serverless instances. Do not upload `.env` or database credentials to GitHub.
 
 ---
 
