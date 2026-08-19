@@ -44,7 +44,7 @@ function normalizeUserRole(role?: string): User['role'] {
   return roleMap[key] ?? 'Manager';
 }
 
-async function startServer() {
+export async function createApp() {
   const app = express();
   const PORT = Number(process.env.PORT || 3000);
   const cloud = new CloudStore();
@@ -1127,7 +1127,7 @@ async function startServer() {
       appType: "spa",
     });
     app.use(vite.middlewares);
-  } else {
+  } else if (!process.env.VERCEL) {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*all", (req, res) => {
@@ -1187,6 +1187,13 @@ async function startServer() {
     }
   });
 
+  return app;
+}
+
+async function startServer() {
+  const app = await createApp();
+  const PORT = Number(process.env.PORT || 3000);
+
   const tryListen = (port: number, retriesLeft: number) => {
     const server = app.listen(port, "0.0.0.0", () => {
       console.log(`EL-JINDI Auto Services Server running on http://0.0.0.0:${port}`);
@@ -1207,4 +1214,6 @@ async function startServer() {
   tryListen(PORT, 10);
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}

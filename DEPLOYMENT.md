@@ -1,9 +1,28 @@
 ﻿# EL-JINDI Auto Services - Deployment Guide
 
-**Deployment Target:** Render.com (Free Tier) + Render Managed PostgreSQL (Managed DB)  
-**Cost:** $0 USD  
+**Deployment Target:** Vercel (frontend and Express API) + PostgreSQL
+**Cost:** Depends on your Vercel and PostgreSQL plans
 **Estimated Deployment Time:** 15-20 minutes  
-**Status:** âœ… Ready for Production
+**Status:** Ready for Vercel deployment
+
+> The Render instructions below are retained as legacy reference. For the active deployment, use the Vercel steps in this section.
+
+## Vercel Deployment
+
+1. Import the GitHub repository into Vercel.
+2. Keep the project root set to the directory containing `package.json`.
+3. Use these settings:
+   - **Framework Preset:** Vite
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+4. Add these Vercel environment variables:
+   - `DATABASE_URL`: your PostgreSQL connection string
+   - `JWT_SECRET`: a long random production secret
+   - `NODE_ENV`: `production`
+   - `VERCEL`: `1`
+5. Deploy. `vercel.json` routes `/api/*` to the Express serverless function and all other paths to the Vite SPA.
+
+Vercel does not provide PostgreSQL. Keep using the existing PostgreSQL provider or create a separate hosted PostgreSQL database, then copy its connection string into Vercel. Do not upload `.env` or database credentials to GitHub.
 
 ---
 
